@@ -1,0 +1,60 @@
+{
+  "contract_version": "hadesos.contracts.v1",
+  "schema_version": "1.0.0",
+  "schema_name": "connector-manifest",
+  "connector_id": "file-metadata",
+  "name": "File Metadata",
+  "description": "Local file metadata and reversible organization connector",
+  "publisher": "Luca Dynamics",
+  "manifest_version": "1.0.0",
+  "status": "active",
+  "execution_modes": [
+    "local_first"
+  ],
+  "data_classifications": [
+    "personal"
+  ],
+  "capabilities": [
+    {
+      "capability_id": "files.metadata.read",
+      "description": "Read file names, sizes, tags, and timestamps",
+      "risk_class": "sensitive_read",
+      "data_classification": "personal",
+      "scopes": [
+        "files.metadata.read"
+      ],
+      "actions": [
+        "list_metadata"
+      ],
+      "requires_approval": false,
+      "rollback_supported": false
+    },
+    {
+      "capability_id": "files.move_to_review",
+      "description": "Move selected files to a review folder",
+      "risk_class": "reversible_write",
+      "data_classification": "personal",
+      "scopes": [
+        "files.metadata.read",
+        "files.move"
+      ],
+      "actions": [
+        "move_to_review_folder"
+      ],
+      "requires_approval": true,
+      "rollback_supported": true
+    }
+  ],
+  "auth": {
+    "type": "oauth_or_local_permission",
+    "token_storage": "not_in_manifest"
+  },
+  "audit_events": [
+    "proposal_created",
+    "approval_requested",
+    "action_executed"
+  ],
+  "fixtures": [
+    "fixtures/file-metadata.synthetic.json"
+  ]
+}

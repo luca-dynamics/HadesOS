@@ -1,0 +1,46 @@
+{
+  "contract_version": "hadesos.contracts.v1",
+  "schema_version": "1.0.0",
+  "schema_name": "rollback-metadata",
+  "rollback_metadata_id": "rollback_file_cleanup_001",
+  "proposal_id": "prop_file_cleanup_001",
+  "created_at": "2026-01-15T10:00:03Z",
+  "connector_id": "file-metadata",
+  "action": "move_to_review_folder",
+  "target": {
+    "type": "files",
+    "count": 2
+  },
+  "risk_class": "reversible_write",
+  "data_classification": "personal",
+  "rollback_strategy": "move_back",
+  "rollback_steps": [
+    {
+      "step": 1,
+      "action": "move",
+      "from": "/Synthetic/Documents/Hades Review/draft-notes.tmp",
+      "to": "/Synthetic/Documents/Downloads/draft-notes.tmp"
+    },
+    {
+      "step": 2,
+      "action": "move",
+      "from": "/Synthetic/Documents/Hades Review/old-export.csv",
+      "to": "/Synthetic/Documents/Downloads/old-export.csv"
+    }
+  ],
+  "pre_action_snapshot": {
+    "files": [
+      {
+        "path": "/Synthetic/Documents/Downloads/draft-notes.tmp",
+        "size_bytes": 1024
+      },
+      {
+        "path": "/Synthetic/Documents/Downloads/old-export.csv",
+        "size_bytes": 2048
+      }
+    ]
+  },
+  "retention_expires_at": "2026-02-14T10:00:03Z",
+  "verified_reversible": true,
+  "correlation_id": "corr_file_cleanup_001"
+}

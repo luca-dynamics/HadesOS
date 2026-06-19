@@ -1,0 +1,45 @@
+{
+  "contract_version": "hadesos.contracts.v1",
+  "schema_version": "1.0.0",
+  "schema_name": "connector-manifest",
+  "connector_id": "homekit-matter-read-first",
+  "name": "HomeKit Matter Read First",
+  "description": "Read-first smart home state connector for MVP 1",
+  "publisher": "Luca Dynamics",
+  "manifest_version": "1.0.0",
+  "status": "active",
+  "execution_modes": [
+    "local_first"
+  ],
+  "data_classifications": [
+    "physical_environment_sensitive"
+  ],
+  "capabilities": [
+    {
+      "capability_id": "devices.observe",
+      "description": "Observe synthetic device state without control",
+      "risk_class": "observe",
+      "data_classification": "physical_environment_sensitive",
+      "scopes": [
+        "home.devices.read"
+      ],
+      "actions": [
+        "list_device_state"
+      ],
+      "requires_approval": false,
+      "rollback_supported": false
+    }
+  ],
+  "auth": {
+    "type": "oauth_or_local_permission",
+    "token_storage": "not_in_manifest"
+  },
+  "audit_events": [
+    "proposal_created",
+    "approval_requested",
+    "action_executed"
+  ],
+  "fixtures": [
+    "fixtures/homekit-matter-read-first.synthetic.json"
+  ]
+}

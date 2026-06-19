@@ -1,0 +1,36 @@
+{
+  "contract_version": "hadesos.contracts.v1",
+  "schema_version": "1.0.0",
+  "schema_name": "approval-request",
+  "approval_request_id": "appr_file_cleanup_001",
+  "proposal_id": "prop_file_cleanup_001",
+  "created_at": "2026-01-15T10:00:05Z",
+  "expires_at": "2026-01-15T10:15:00Z",
+  "requested_by": "user",
+  "approver": {
+    "user_id": "synthetic_user_001"
+  },
+  "summary": "Approve moving two synthetic files to the Hades Review folder.",
+  "risk_class": "reversible_write",
+  "data_classification": "personal",
+  "policy_decision": "approval_required",
+  "approval_prompt": "HadesOS can move these files to a review folder. Nothing will be permanently deleted.",
+  "affected_resources": [
+    {
+      "type": "file",
+      "path": "/Synthetic/Documents/Downloads/draft-notes.tmp"
+    },
+    {
+      "type": "file",
+      "path": "/Synthetic/Documents/Downloads/old-export.csv"
+    }
+  ],
+  "alternatives": [
+    "Show files only",
+    "Cancel cleanup",
+    "Move one file at a time"
+  ],
+  "rollback_metadata_ref": "rollback_file_cleanup_001",
+  "audit_event_ref": "audit_file_cleanup_001",
+  "correlation_id": "corr_file_cleanup_001"
+}
