@@ -1,0 +1,44 @@
+{
+  "contract_version": "hadesos.contracts.v1",
+  "schema_version": "1.0.0",
+  "proposal_id": "prop_file_cleanup_001",
+  "created_at": "2026-01-15T10:00:00Z",
+  "requested_by": "user",
+  "connector_id": "file-metadata",
+  "capability": "files.move_to_review",
+  "action": "move_to_review_folder",
+  "target": {
+    "type": "folder",
+    "path": "/Synthetic/Documents/Downloads",
+    "selection": [
+      "draft-notes.tmp",
+      "old-export.csv"
+    ]
+  },
+  "risk_class": "reversible_write",
+  "data_classification": "personal",
+  "execution_mode": "local_only",
+  "correlation_id": "corr_file_cleanup_001",
+  "schema_name": "action-proposal",
+  "requester": {
+    "user_id": "synthetic_user_001"
+  },
+  "summary": "Move two synthetic low-value files into a review folder before deletion.",
+  "reason": "The user asked HadesOS to prepare a reversible cleanup of stale local files.",
+  "scopes_required": [
+    "files.metadata.read",
+    "files.move"
+  ],
+  "inputs": {
+    "older_than_days": 30,
+    "dry_run": false
+  },
+  "preview": {
+    "files_to_move": 2,
+    "destination": "/Synthetic/Documents/Hades Review"
+  },
+  "requires_approval": true,
+  "rollback_required": true,
+  "rollback_metadata_ref": "rollback_file_cleanup_001",
+  "expires_at": "2026-01-15T10:15:00Z"
+}

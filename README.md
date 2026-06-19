@@ -71,44 +71,10 @@ High-risk physical control, cameras, access control, emergency-system integratio
 
 ## Repository Structure
 
-`PRODUCT_ARCHITECTURE.md` remains the canonical HadesOS vision document. The repository foundation below is the engineering execution layer that translates that vision into buildable boundaries, contracts, and MVP constraints without adding application implementation yet.
-
-- `apps/` — future user-facing clients.
-  - `apps/desktop/` — macOS-first desktop experience.
-  - `apps/mobile/` — mobile companion for approvals and glanceable status.
-  - `apps/web-admin/` — future organization administration surface.
-- `packages/` — future shared local and cross-platform product packages.
-  - `packages/runtime/` — local runtime boundary.
-  - `packages/context-engine/` — normalized context boundary.
-  - `packages/agent-orchestrator/` — planning and verification boundary.
-  - `packages/model-router/` — policy-aware model routing boundary.
-  - `packages/safety-kernel/` — deterministic safety and approval boundary.
-  - `packages/connectors/` — typed connector framework boundary.
-  - `packages/automation-engine/` — deterministic workflow execution boundary.
-- `services/` — future cloud-coordination service boundaries.
-  - `services/api/` — account, organization, policy, and sync APIs.
-  - `services/events/` — event ingestion and distribution.
-  - `services/ai-gateway/` — governed model access.
-- `docs/` — engineering execution documents.
-  - `docs/adr/` — architecture decision records.
-  - `docs/product/` — product and UX execution specs.
-  - `docs/architecture/` — system architecture notes.
-  - `docs/security/` — safety, permission, privacy, and audit contracts.
-  - `docs/connectors/` — connector contracts and examples.
-  - `docs/mvp/` — MVP scope and sequencing boundaries.
-
-## Engineering Execution Docs
-
-- [MVP 1 Scope](docs/mvp/mvp-1-scope.md)
-- [Desktop and Mobile UX Spec](docs/product/desktop-mobile-ux-spec.md)
-- [Safety Kernel Contract](docs/security/safety-kernel-contract.md)
-- [Connector Contract](docs/connectors/connector-contract.md)
-- [ADR 0001: Local-First, Cloud-Coordinated Architecture](docs/adr/0001-local-first-cloud-coordinated-architecture.md)
-- [ADR 0002: Native-First Desktop and Mobile Strategy](docs/adr/0002-native-first-desktop-and-mobile-strategy.md)
-- [ADR 0003: Rust Local Runtime Foundation](docs/adr/0003-rust-local-runtime-foundation.md)
-- [ADR 0004: Policy-First Model Router](docs/adr/0004-policy-first-model-router.md)
-- [ADR 0005: Deterministic Safety Kernel](docs/adr/0005-deterministic-safety-kernel.md)
-- [ADR 0006: Typed Connector Framework](docs/adr/0006-typed-connector-framework.md)
+- [`PRODUCT_ARCHITECTURE.md`](PRODUCT_ARCHITECTURE.md): full product architecture and roadmap.
+- [`docs/`](docs/): safety, connector, and MVP scope documentation.
+- [`packages/`](packages/README.md): shared package boundaries for future implementations.
+- [`packages/contracts/`](packages/contracts/README.md): versioned JSON Schemas and synthetic examples for safety-kernel and connector contracts.
 
 ## Detailed Product Architecture
 

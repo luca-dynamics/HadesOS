@@ -1,0 +1,29 @@
+{
+  "contract_version": "hadesos.contracts.v1",
+  "schema_version": "1.0.0",
+  "schema_name": "audit-event",
+  "audit_event_id": "audit_file_cleanup_001",
+  "occurred_at": "2026-01-15T10:01:00Z",
+  "event_type": "action_executed",
+  "actor": {
+    "type": "local_runtime",
+    "id": "synthetic_device_runtime_001"
+  },
+  "requested_by": "user",
+  "policy_decision": "allowed",
+  "risk_class": "reversible_write",
+  "data_classification": "personal",
+  "connector_id": "file-metadata",
+  "capability": "files.move_to_review",
+  "action": "move_to_review_folder",
+  "target": {
+    "type": "folder",
+    "path": "/Synthetic/Documents/Downloads"
+  },
+  "proposal_id": "prop_file_cleanup_001",
+  "approval_request_id": "appr_file_cleanup_001",
+  "rollback_metadata_ref": "rollback_file_cleanup_001",
+  "outcome": "succeeded",
+  "message": "Moved two synthetic files to the review folder after approval.",
+  "correlation_id": "corr_file_cleanup_001"
+}

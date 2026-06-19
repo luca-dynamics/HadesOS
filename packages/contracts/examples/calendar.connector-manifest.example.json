@@ -1,0 +1,59 @@
+{
+  "contract_version": "hadesos.contracts.v1",
+  "schema_version": "1.0.0",
+  "schema_name": "connector-manifest",
+  "connector_id": "calendar",
+  "name": "Calendar",
+  "description": "Read-first calendar context connector",
+  "publisher": "Luca Dynamics",
+  "manifest_version": "1.0.0",
+  "status": "active",
+  "execution_modes": [
+    "local_first"
+  ],
+  "data_classifications": [
+    "personal"
+  ],
+  "capabilities": [
+    {
+      "capability_id": "events.read",
+      "description": "Read upcoming synthetic calendar metadata",
+      "risk_class": "sensitive_read",
+      "data_classification": "personal",
+      "scopes": [
+        "calendar.events.read"
+      ],
+      "actions": [
+        "list_events"
+      ],
+      "requires_approval": false,
+      "rollback_supported": false
+    },
+    {
+      "capability_id": "events.draft",
+      "description": "Draft calendar updates without sending invites",
+      "risk_class": "draft",
+      "data_classification": "personal",
+      "scopes": [
+        "calendar.events.write_draft"
+      ],
+      "actions": [
+        "draft_event_update"
+      ],
+      "requires_approval": true,
+      "rollback_supported": true
+    }
+  ],
+  "auth": {
+    "type": "oauth_or_local_permission",
+    "token_storage": "not_in_manifest"
+  },
+  "audit_events": [
+    "proposal_created",
+    "approval_requested",
+    "action_executed"
+  ],
+  "fixtures": [
+    "fixtures/calendar.synthetic.json"
+  ]
+}

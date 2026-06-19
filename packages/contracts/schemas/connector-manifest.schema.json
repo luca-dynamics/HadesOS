@@ -1,0 +1,186 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.hadesos.local/contracts/v1/connector-manifest.schema.json",
+  "title": "HadesOS Connector Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "hadesos.contracts.v1"
+    },
+    "schema_name": {
+      "type": "string",
+      "const": "connector-manifest"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.0$"
+    },
+    "connector_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "publisher": {
+      "type": "string",
+      "minLength": 1
+    },
+    "manifest_version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.0$"
+    },
+    "status": {
+      "enum": [
+        "active",
+        "disabled",
+        "revoked",
+        "experimental"
+      ]
+    },
+    "execution_modes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "local_only",
+          "cloud_only",
+          "local_first",
+          "cloud_brokered",
+          "enterprise_private"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "data_classifications": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "public",
+          "personal",
+          "confidential",
+          "business_sensitive",
+          "regulated",
+          "physical_environment_sensitive"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "capability_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "risk_class": {
+            "enum": [
+              "observe",
+              "sensitive_read",
+              "draft",
+              "reversible_write",
+              "external_send",
+              "privileged_change",
+              "physical_control",
+              "forbidden"
+            ]
+          },
+          "data_classification": {
+            "enum": [
+              "public",
+              "personal",
+              "confidential",
+              "business_sensitive",
+              "regulated",
+              "physical_environment_sensitive"
+            ]
+          },
+          "scopes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          },
+          "requires_approval": {
+            "type": "boolean"
+          },
+          "rollback_supported": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "capability_id",
+          "description",
+          "risk_class",
+          "data_classification",
+          "scopes",
+          "actions",
+          "requires_approval",
+          "rollback_supported"
+        ]
+      }
+    },
+    "auth": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "audit_events": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "fixtures": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "contract_version",
+    "schema_name",
+    "schema_version",
+    "connector_id",
+    "name",
+    "description",
+    "publisher",
+    "manifest_version",
+    "status",
+    "execution_modes",
+    "data_classifications",
+    "capabilities",
+    "auth",
+    "audit_events"
+  ]
+}
