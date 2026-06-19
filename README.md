@@ -68,6 +68,14 @@ High-risk physical control, cameras, access control, emergency-system integratio
 - No dangerous autonomous physical actions
 - Strong human override
 
+
+## Repository Structure
+
+- [`PRODUCT_ARCHITECTURE.md`](PRODUCT_ARCHITECTURE.md): full product architecture and roadmap.
+- [`docs/`](docs/): safety, connector, and MVP scope documentation.
+- [`packages/`](packages/README.md): shared package boundaries for future implementations.
+- [`packages/contracts/`](packages/contracts/README.md): versioned JSON Schemas and synthetic examples for safety-kernel and connector contracts.
+
 ## Detailed Product Architecture
 
 See [`PRODUCT_ARCHITECTURE.md`](PRODUCT_ARCHITECTURE.md) for the full product definition, positioning, user experience, technical architecture, agent system, model router, safety kernel, memory design, connectors, stack recommendations, roadmap, compliance strategy, business strategy, risks, and final architecture verdict.

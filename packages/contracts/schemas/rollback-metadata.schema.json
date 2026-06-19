@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.hadesos.local/contracts/v1/rollback-metadata.schema.json",
+  "title": "HadesOS Rollback Metadata",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "hadesos.contracts.v1"
+    },
+    "schema_name": {
+      "type": "string",
+      "const": "rollback-metadata"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.0$"
+    },
+    "rollback_metadata_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "proposal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "connector_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "action": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "risk_class": {
+      "enum": [
+        "observe",
+        "sensitive_read",
+        "draft",
+        "reversible_write",
+        "external_send",
+        "privileged_change",
+        "physical_control",
+        "forbidden"
+      ]
+    },
+    "data_classification": {
+      "enum": [
+        "public",
+        "personal",
+        "confidential",
+        "business_sensitive",
+        "regulated",
+        "physical_environment_sensitive"
+      ]
+    },
+    "rollback_strategy": {
+      "enum": [
+        "restore_previous_state",
+        "delete_created_resource",
+        "move_back",
+        "reapply_permissions",
+        "manual_review_required"
+      ]
+    },
+    "rollback_steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "minItems": 1
+    },
+    "pre_action_snapshot": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "retention_expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "verified_reversible": {
+      "type": "boolean"
+    },
+    "correlation_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "contract_version",
+    "schema_name",
+    "schema_version",
+    "rollback_metadata_id",
+    "proposal_id",
+    "created_at",
+    "connector_id",
+    "action",
+    "target",
+    "risk_class",
+    "data_classification",
+    "rollback_strategy",
+    "rollback_steps",
+    "pre_action_snapshot",
+    "retention_expires_at",
+    "verified_reversible",
+    "correlation_id"
+  ]
+}

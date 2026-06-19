@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.hadesos.local/contracts/v1/approval-request.schema.json",
+  "title": "HadesOS Approval Request",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "const": "hadesos.contracts.v1"
+    },
+    "schema_name": {
+      "type": "string",
+      "const": "approval-request"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.0$"
+    },
+    "approval_request_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "proposal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "requested_by": {
+      "enum": [
+        "user",
+        "automation",
+        "agent",
+        "system"
+      ]
+    },
+    "approver": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "risk_class": {
+      "enum": [
+        "observe",
+        "sensitive_read",
+        "draft",
+        "reversible_write",
+        "external_send",
+        "privileged_change",
+        "physical_control",
+        "forbidden"
+      ]
+    },
+    "data_classification": {
+      "enum": [
+        "public",
+        "personal",
+        "confidential",
+        "business_sensitive",
+        "regulated",
+        "physical_environment_sensitive"
+      ]
+    },
+    "policy_decision": {
+      "enum": [
+        "allowed",
+        "denied",
+        "approval_required",
+        "expired",
+        "blocked_forbidden",
+        "blocked_scope",
+        "blocked_policy"
+      ]
+    },
+    "approval_prompt": {
+      "type": "string",
+      "minLength": 1
+    },
+    "affected_resources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "alternatives": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "rollback_metadata_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "audit_event_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "correlation_id": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "contract_version",
+    "schema_name",
+    "schema_version",
+    "approval_request_id",
+    "proposal_id",
+    "created_at",
+    "expires_at",
+    "requested_by",
+    "summary",
+    "risk_class",
+    "data_classification",
+    "policy_decision",
+    "approval_prompt",
+    "affected_resources",
+    "correlation_id"
+  ]
+}

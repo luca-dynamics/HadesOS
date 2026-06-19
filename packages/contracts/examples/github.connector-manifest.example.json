@@ -1,0 +1,60 @@
+{
+  "contract_version": "hadesos.contracts.v1",
+  "schema_version": "1.0.0",
+  "schema_name": "connector-manifest",
+  "connector_id": "github",
+  "name": "GitHub",
+  "description": "GitHub issue and pull request context connector",
+  "publisher": "Luca Dynamics",
+  "manifest_version": "1.0.0",
+  "status": "active",
+  "execution_modes": [
+    "local_first"
+  ],
+  "data_classifications": [
+    "business_sensitive"
+  ],
+  "capabilities": [
+    {
+      "capability_id": "issues.read",
+      "description": "Read issue and pull request metadata",
+      "risk_class": "sensitive_read",
+      "data_classification": "business_sensitive",
+      "scopes": [
+        "github.issues.read",
+        "github.pull_requests.read"
+      ],
+      "actions": [
+        "summarize_work"
+      ],
+      "requires_approval": false,
+      "rollback_supported": false
+    },
+    {
+      "capability_id": "issues.comment_draft",
+      "description": "Draft an issue comment without posting",
+      "risk_class": "draft",
+      "data_classification": "business_sensitive",
+      "scopes": [
+        "github.issues.read"
+      ],
+      "actions": [
+        "draft_issue_comment"
+      ],
+      "requires_approval": true,
+      "rollback_supported": true
+    }
+  ],
+  "auth": {
+    "type": "oauth_or_local_permission",
+    "token_storage": "not_in_manifest"
+  },
+  "audit_events": [
+    "proposal_created",
+    "approval_requested",
+    "action_executed"
+  ],
+  "fixtures": [
+    "fixtures/github.synthetic.json"
+  ]
+}
