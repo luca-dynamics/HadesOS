@@ -2,13 +2,17 @@
 
 **HadesOS** is a privacy-first ambient AI system app by Luca Dynamics for personal, home, office, startup, and enterprise environments.
 
-HadesOS helps people and teams understand, automate, secure, and control their devices, spaces, systems, and workflows through a calm Apple-level desktop and mobile experience.
+HadesOS helps people and teams understand, automate, secure, and control their devices, spaces, systems, and workflows through a calm desktop and mobile experience.
 
 > **Tagline:** Calm intelligence for everything around you.
 
-## Product Definition
+## Canonical vision
 
-HadesOS is not a replacement operating system, command center, surveillance product, or autonomous physical-control system. It is a system-level AI application layer that runs across desktop, mobile, smart home, office, and enterprise environments while keeping humans in control.
+The canonical product vision, architecture, roadmap, and positioning live in [`PRODUCT_ARCHITECTURE.md`](PRODUCT_ARCHITECTURE.md). Treat that file as the source of truth for the long-term HadesOS product definition.
+
+## Product definition
+
+HadesOS is not a replacement operating system, surveillance product, or autonomous physical-control system. It is a system-level AI application layer that runs across desktop, mobile, smart home, office, and enterprise environments while keeping humans in control.
 
 The product combines:
 
@@ -19,11 +23,11 @@ The product combines:
 - Privacy-first memory and model routing
 - Safe connectors for apps, devices, spaces, and workflows
 
-## Product Layers
+## Product layers
 
 ### Personal Hades
 
-For normal users managing personal devices, files, apps, calendars, homes, and routines.
+For people managing personal devices, files, apps, calendars, homes, and routines.
 
 ### Hades Business
 
@@ -33,9 +37,9 @@ For teams and small companies managing shared tools, office workflows, approvals
 
 For organizations needing role-based access, SSO/SCIM, compliance logs, device intelligence, security workflows, model governance, and enterprise integrations.
 
-## Core Architecture
+## Core architecture
 
-HadesOS is built from scratch around a local-first, cloud-coordinated architecture:
+HadesOS is built around a local-first, cloud-coordinated architecture:
 
 - **Hades Runtime:** local secure runtime for device context, approvals, local inference, encryption, and workflow execution.
 - **Cloud Coordinator:** synchronization, organization management, multi-device coordination, and enterprise control plane.
@@ -48,13 +52,15 @@ HadesOS is built from scratch around a local-first, cloud-coordinated architectu
 - **Automation Engine:** deterministic execution of approved workflows with previews, rollback metadata, and audit logs.
 - **Enterprise Admin Layer:** RBAC/ABAC, SSO, SCIM, policy templates, audit exports, compliance controls, and data residency.
 
-## Initial MVP Direction
+## Initial MVP direction
 
 The first realistic product should be a macOS-first prosumer and SMB companion that connects devices, files, calendars, Slack, GitHub/Jira, and simple workflows. It should focus on understanding context, drafting actions, recommending safe automations, and executing approved reversible workflows.
 
 High-risk physical control, cameras, access control, emergency-system integration, production infrastructure writes, and robotics should be delayed until the safety, audit, and compliance foundations are mature.
 
-## Core Principles
+See [`docs/mvp/mvp-1-scope.md`](docs/mvp/mvp-1-scope.md) for the MVP 1 product goal, target users, included features, exclusions, non-goals, success criteria, first wedge, and boundaries.
+
+## Core principles
 
 - Calm and simple user experience
 - Privacy-first architecture
@@ -68,17 +74,55 @@ High-risk physical control, cameras, access control, emergency-system integratio
 - No dangerous autonomous physical actions
 - Strong human override
 
+## Repository structure
 
-## Repository Structure
+```text
+.
+├── PRODUCT_ARCHITECTURE.md
+├── README.md
+├── docs/
+│   ├── connectors/
+│   │   └── connector-contract.md
+│   ├── mvp/
+│   │   └── mvp-1-scope.md
+│   └── security/
+│       └── safety-kernel-contract.md
+└── packages/
+    ├── README.md
+    └── contracts/
+        ├── README.md
+        ├── VALIDATION.md
+        ├── examples/
+        │   ├── calendar.connector-manifest.example.json
+        │   ├── file-cleanup.action-proposal.example.json
+        │   ├── file-cleanup.approval-request.example.json
+        │   ├── file-cleanup.audit-event.example.json
+        │   ├── file-cleanup.rollback-metadata.example.json
+        │   ├── file-metadata.connector-manifest.example.json
+        │   ├── github.connector-manifest.example.json
+        │   ├── homekit-matter-read-first.connector-manifest.example.json
+        │   └── slack.connector-manifest.example.json
+        ├── fixtures/
+        │   └── README.md
+        └── schemas/
+            ├── action-proposal.schema.json
+            ├── approval-request.schema.json
+            ├── audit-event.schema.json
+            ├── connector-manifest.schema.json
+            └── rollback-metadata.schema.json
+```
 
-- [`PRODUCT_ARCHITECTURE.md`](PRODUCT_ARCHITECTURE.md): full product architecture and roadmap.
-- [`docs/`](docs/): safety, connector, and MVP scope documentation.
-- [`packages/`](packages/README.md): shared package boundaries for future implementations.
-- [`packages/contracts/`](packages/contracts/README.md): versioned JSON Schemas and synthetic examples for safety-kernel and connector contracts.
+## Engineering execution docs
 
-## Detailed Product Architecture
+- [`docs/security/safety-kernel-contract.md`](docs/security/safety-kernel-contract.md): safety kernel purpose, risk classes, approval requirements, forbidden actions, proposal and approval payloads, audit events, rollback metadata, human override, and schema/example links.
+- [`docs/connectors/connector-contract.md`](docs/connectors/connector-contract.md): connector purpose, required declaration fields, execution rules, MVP 1 connector examples, schema/example links, and read-first MVP posture.
+- [`docs/mvp/mvp-1-scope.md`](docs/mvp/mvp-1-scope.md): MVP 1 scope, product goal, target users, included and excluded features, non-goals, success criteria, first wedge, and contract links.
+- [`packages/README.md`](packages/README.md): shared package boundaries for future implementation work.
+- [`packages/contracts/README.md`](packages/contracts/README.md): versioned JSON Schemas and synthetic examples for safety-kernel and connector contracts.
 
-See [`PRODUCT_ARCHITECTURE.md`](PRODUCT_ARCHITECTURE.md) for the full product definition, positioning, user experience, technical architecture, agent system, model router, safety kernel, memory design, connectors, stack recommendations, roadmap, compliance strategy, business strategy, risks, and final architecture verdict.
+## Contracts status
+
+[`packages/contracts/`](packages/contracts/README.md) is schema-only. It contains JSON Schemas, synthetic examples, fixture guidance, and validation expectations for future work. It does **not** contain runtime code, connector implementations, package managers, dependencies, generated types, validation scripts, CI workflows, app frameworks, or production tooling.
 
 ## Status
 

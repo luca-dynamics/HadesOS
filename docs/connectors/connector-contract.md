@@ -1,32 +1,73 @@
 # Connector Contract
 
-Every HadesOS connector must be least-privilege, typed, revocable, testable, and auditable before it can be used by agents or automations.
+HadesOS connectors are signed, least-privilege adapters that expose declared capabilities to the runtime and safety kernel. Connectors translate external systems into typed, revocable, auditable capabilities; they do not grant agents arbitrary API access.
 
-## Required declaration
+Every connector must be safe to inspect, safe to revoke, testable with synthetic fixtures, and compatible with the safety-kernel proposal, approval, audit, and rollback contracts.
 
-Each connector must declare:
+## Machine-readable schema and examples
 
-- `connector_name`
-- `domain`
-- `capabilities`
-- `read_scopes`
-- `write_scopes`
-- `risk_classes`
-- `data_classification`
-- `local_or_cloud_execution_mode`
-- `auth_method`
-- `revocation_behavior`
-- `dry_run_support`
-- `audit_events`
-- `test_fixture_requirements`
+The connector manifest schema lives at [`../../packages/contracts/schemas/connector-manifest.schema.json`](../../packages/contracts/schemas/connector-manifest.schema.json).
 
-## Execution rules
+MVP 1 connector examples live in [`../../packages/contracts/examples/`](../../packages/contracts/examples/):
+
+- [`calendar.connector-manifest.example.json`](../../packages/contracts/examples/calendar.connector-manifest.example.json)
+- [`file-metadata.connector-manifest.example.json`](../../packages/contracts/examples/file-metadata.connector-manifest.example.json)
+- [`slack.connector-manifest.example.json`](../../packages/contracts/examples/slack.connector-manifest.example.json)
+- [`github.connector-manifest.example.json`](../../packages/contracts/examples/github.connector-manifest.example.json)
+- [`homekit-matter-read-first.connector-manifest.example.json`](../../packages/contracts/examples/homekit-matter-read-first.connector-manifest.example.json)
+
+These contracts are schema-only and do not provide connector runtime code, package managers, validation scripts, generated types, or CI workflows yet.
+
+## Required connector declaration fields
+
+Each connector manifest must declare:
+
+- `contract_version`: versioned HadesOS contract family.
+- `schema_name` and `schema_version`: concrete manifest schema identity.
+- `connector_id`: stable machine-readable connector identifier.
+- `connector_name`: human-readable connector name.
+- `domain`: product domain such as scheduling, local files, team communication, software collaboration, or smart spaces.
+- `description`: concise explanation of the connector purpose.
+- `capabilities`: typed actions the connector exposes.
+- `read_scopes`: data the connector may read when authorized.
+- `write_scopes`: bounded changes the connector may perform when approved.
+- `risk_classes`: risk classes that connector capabilities may produce.
+- `data_classification`: sensitivity of data handled by the connector.
+- `local_or_cloud_execution_mode`: where execution occurs.
+- `auth_method`: authorization mechanism such as OS permission, OAuth, fine-grained token, or platform permission grant.
+- `revocation_behavior`: what happens when authorization is revoked.
+- `dry_run_support`: whether the connector can preview side effects before execution.
+- `audit_events`: event names emitted for reads, drafts, approvals, writes, failures, revocations, and rollbacks.
+- `test_fixture_requirements`: synthetic fixture expectations for deterministic future tests.
+
+## Connector execution rules
 
 - Connectors expose typed capabilities, not arbitrary API access.
-- Agents can request connector actions only through action proposals.
+- Agents, automations, and system components can request connector actions only through action proposals.
 - The safety kernel must approve side-effecting actions before an executor calls a connector.
-- Connectors must degrade safely when auth is revoked or network access fails.
-- MVP connectors should prefer read-only metadata and reversible actions.
+- Connectors must enforce declared scopes and fail closed when authorization is missing or policy is unclear.
+- Connectors must degrade safely when auth is revoked, network access fails, data is unavailable, or dry-run preview cannot be produced.
+- Connectors must emit or enable audit events for meaningful reads, proposals, approvals, executions, denials, failures, revocations, and rollbacks.
+- Connectors must avoid storing unnecessary sensitive payload content and should prefer redacted summaries in audit records.
+- Reversible writes must provide rollback metadata before approval.
+- MVP 1 connectors must remain read-first, draft-only, or limited to approved reversible operations.
+
+## Execution modes
+
+- `local_only`: connector runs on the user's device and does not require cloud mediation.
+- `cloud_only`: connector depends on a cloud API.
+- `local_first`: connector prefers local access and may use cloud coordination later.
+- `cloud_brokered`: connector uses a HadesOS-managed broker for organization or multi-device coordination.
+- `enterprise_private`: connector runs in an organization-controlled environment.
+
+## Data classifications
+
+- `public`
+- `personal`
+- `confidential`
+- `business_sensitive`
+- `regulated`
+- `physical_environment_sensitive`
 
 ## Example: Calendar connector
 
@@ -43,8 +84,9 @@ Each connector must declare:
 - `dry_run_support`: required for event creation and changes
 - `audit_events`: calendar.read, calendar.draft, calendar.approval_requested, calendar.write, calendar.rollback
 - `test_fixture_requirements`: synthetic calendars with personal, team, recurring, and conflict scenarios
+- Example manifest: [`calendar.connector-manifest.example.json`](../../packages/contracts/examples/calendar.connector-manifest.example.json)
 
-## Example: File metadata connector
+## Example: File Metadata connector
 
 - `connector_name`: File Metadata
 - `domain`: local files
@@ -59,6 +101,7 @@ Each connector must declare:
 - `dry_run_support`: required for any future move, rename, or tag write
 - `audit_events`: files.scan, files.indexed, files.proposal, files.write, files.rollback
 - `test_fixture_requirements`: synthetic directory trees with nested permissions, aliases, large folders, and sensitive names
+- Example manifest: [`file-metadata.connector-manifest.example.json`](../../packages/contracts/examples/file-metadata.connector-manifest.example.json)
 
 ## Example: Slack connector
 
@@ -75,6 +118,7 @@ Each connector must declare:
 - `dry_run_support`: required for messages and channel changes
 - `audit_events`: slack.read, slack.draft, slack.approval_requested, slack.send
 - `test_fixture_requirements`: synthetic workspaces, private-channel denial cases, message drafting, and revoked-token tests
+- Example manifest: [`slack.connector-manifest.example.json`](../../packages/contracts/examples/slack.connector-manifest.example.json)
 
 ## Example: GitHub connector
 
@@ -91,6 +135,7 @@ Each connector must declare:
 - `dry_run_support`: required for comments, labels, assignments, and workflow proposals
 - `audit_events`: github.read, github.draft, github.approval_requested, github.write
 - `test_fixture_requirements`: synthetic repos with issues, pull requests, branch protections, permission-denied cases, and no-op dry runs
+- Example manifest: [`github.connector-manifest.example.json`](../../packages/contracts/examples/github.connector-manifest.example.json)
 
 ## Example: HomeKit/Matter read-first connector
 
@@ -107,37 +152,8 @@ Each connector must declare:
 - `dry_run_support`: not applicable for read-only MVP 1; required before any future write capability
 - `audit_events`: space.read, device.status_read, device.revoked
 - `test_fixture_requirements`: synthetic homes with rooms, offline devices, denied devices, and explicitly excluded cameras/locks
-HadesOS connectors are signed, least-privilege adapters that expose declared capabilities to the runtime and safety kernel. Connectors must describe their data scopes, action scopes, risk classes, execution modes, data classifications, authorization style, audit events, and test fixture expectations before implementation work begins.
-
-## Machine-readable schema
-
-The connector manifest schema lives at [`../../packages/contracts/schemas/connector-manifest.schema.json`](../../packages/contracts/schemas/connector-manifest.schema.json).
-
-MVP 1 connector examples live in [`../../packages/contracts/examples/`](../../packages/contracts/examples/):
-
-- calendar connector manifest
-- file metadata connector manifest
-- Slack connector manifest
-- GitHub connector manifest
-- HomeKit Matter read-first connector manifest
-
-## Execution modes
-
-- `local_only`
-- `cloud_only`
-- `local_first`
-- `cloud_brokered`
-- `enterprise_private`
-
-## Data classifications
-
-- `public`
-- `personal`
-- `confidential`
-- `business_sensitive`
-- `regulated`
-- `physical_environment_sensitive`
+- Example manifest: [`homekit-matter-read-first.connector-manifest.example.json`](../../packages/contracts/examples/homekit-matter-read-first.connector-manifest.example.json)
 
 ## MVP 1 connector posture
 
-MVP 1 connectors should prefer read-first, draft-only, and reversible operations. Smart home examples must remain read-first and must not include autonomous physical control.
+MVP 1 connectors must be read-first, draft-only, or limited to reversible operations with explicit approval, dry-run support, audit events, and rollback metadata. MVP 1 must not include autonomous physical control, covert monitoring, production infrastructure writes, or broad connector marketplace mechanics.
